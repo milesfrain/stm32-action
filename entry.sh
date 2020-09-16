@@ -1,11 +1,14 @@
 #!/bin/sh -l
 
-set -x
-echo "Hello $1"
-time=$(date)
-echo "::set-output name=time::$time"
+# echo commands and exit with failure if any commands fail
+set -ex
 
 cd $GITHUB_WORKSPACE
 
-set -e
 ./ci.sh 2>&1
+
+# if there's a failure, we shouldn't even get to this point:
+
+status=$?
+echo status $status
+exit $status
